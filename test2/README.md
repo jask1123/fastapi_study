@@ -40,3 +40,13 @@ docker compose exec demo-app poetry add sqlalchemy pymysql
 ```bash
 docker compose exec demo-app poerty run python  -m api.migrate_db.py
 ```
+#何故かホストに接続的ないことがあるので、その時は以下のコマンドを実行する
+dbコンテナに接続
+コンテナ内でコマンドを実行
+```bash
+musql
+CREATE USER 'sample_user' IDENTIFIED BY '';
+GRANT ALL PRIVILEGES ON *.* TO 'sample_user'@'%' WITH GRANT OPTION;
+create database demo;
+```
+そしたらapiモジュールのmigrate_dbScriptを実行するが実行できる。

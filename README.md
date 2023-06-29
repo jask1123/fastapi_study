@@ -38,5 +38,5 @@ docker compose exec demo-app poetry add sqlalchemy pymysql
 ```
 #apiモジュールのmigrate_dbScriptを実行する
 ```bash
-docker compose exec demo-app poerty run python  -m api.migrate_db.py
+docker compose exec demo-app poetry run python  -m api.migrate_db.py
 ```
