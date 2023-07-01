@@ -50,3 +50,13 @@ GRANT ALL PRIVILEGES ON *.* TO 'sample_user'@'%' WITH GRANT OPTION;
 create database demo;
 ```
 そしたらapiモジュールのmigrate_dbScriptを実行するが実行できる。
+
+非同期処理を行うためにaiomysqlをインストールする
+```bash
+docker compose exec demo-app poetry add aiomysql
+```
+
+# テストを実行する
+```bash
+docker compose exec demo-app poetry add -G dev pytest-asyncio aiosqlite httpx
+```
