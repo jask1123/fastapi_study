@@ -38,7 +38,7 @@ docker compose exec demo-app poetry add sqlalchemy pymysql
 ```
 #apiモジュールのmigrate_dbScriptを実行する
 ```bash
-docker compose exec demo-app poerty run python  -m api.migrate_db.py
+docker compose exec demo-app poetry run python  -m api.migrate_db.py
 ```
 #何故かホストに接続的ないことがあるので、その時は以下のコマンドを実行する
 dbコンテナに接続
@@ -56,7 +56,26 @@ create database demo;
 docker compose exec demo-app poetry add aiomysql
 ```
 
-# テストを実行する
+# user情報登録のためにbcryptをインストールする
+pyproject.tomlに以下を追加
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.99.1"
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+sqlalchemy = "^2.0.17"
+pymysql = "^1.1.0"
+aiomysql = "^0.2.0"
+python-jose = {extras = ["cryptography"], version = "^3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.0"}
+python-multipart = "^0.0.5"
 ```bash
-docker compose exec demo-app poetry add -G dev pytest-asyncio aiosqlite httpx
+poetry update
+```
+をコンテナ内で実行する
+
+#詰まったところ
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+このエラーが出たときは、以下のコマンドを実行する
+```bash
+mysql -h 127.0.0.1 -P 3306 -u root -proot
 ```

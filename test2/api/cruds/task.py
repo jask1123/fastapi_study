@@ -14,13 +14,15 @@ async def create_task(db: AsyncSession, task_create: task_schema.TaskCreate) -> 
     return task
 
 
-async def get_tasks_with_done(db: AsyncSession) -> list[tuple[int, str, bool]]:
-    result: await Result = db.execute(
-        select(
-            task_model.Task.id,
-            task_model.Task.title,
-            task_model.Done.id.isnot(None).label("done"),
-        ).outerjoin(task_model.Done)
+async def get_tasks_with_done(db: AsyncSession) -> List[Tuple[int, str, bool]]:
+    result: Result = await (
+        db.execute(
+            select(
+                task_model.Task.id,
+                task_model.Task.title,
+                task_model.Done.id.isnot(None).label("done"),
+            ).outerjoin(task_model.Done)
+        )
     )
     return result.all()
 
