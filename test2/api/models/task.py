@@ -8,15 +8,16 @@ class Task(Base):
     __tablename__ = 'tasks'
     id = Column(Integer, primary_key=True)
     title = Column(String(1024), nullable=False)
-    done = relationship('Done', back_populates='task', cascade='delete')
+    user_id = Column(Integer, ForeignKey('users.id'))
 
+    done = relationship('Done', back_populates='task', cascade='delete')
+    user = relationship('User', back_populates='tasks')
 
 class Done(Base):
     __tablename__ = 'dones'
     id = Column(Integer, ForeignKey('tasks.id'), primary_key=True)
 
     task = relationship('Task', back_populates='done')
-
 
 class User(Base):
     __tablename__ = "users"
@@ -26,3 +27,5 @@ class User(Base):
     email = Column(String(255), unique=True, index=True)
     hashed_password = Column(String(255))
     is_active = Column(Boolean, default=True)
+
+    tasks = relationship('Task', back_populates='user')

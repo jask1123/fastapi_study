@@ -4,18 +4,17 @@ import api.cruds.task as task_crud
 from api.db import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 
-
 router = APIRouter()
 
 
-@router.get('/tasks', response_model=list[task_schema.Task])
-async def list_tasks(db: AsyncSession = Depends(get_db)):
-    return await task_crud.get_tasks_with_done(db)
+@router.get('/users/{user_id}/tasks', response_model=list[task_schema.Task])
+async def list_tasks(user_id: int, db: AsyncSession = Depends(get_db)):
+    return await task_crud.get_tasks_with_done(db, user_id=user_id)
 
 
-@router.post('/tasks', response_model=task_schema.TaskCreateResponse)
-async def create_task(task_body: task_schema.TaskCreate, db: AsyncSession = Depends(get_db)):
-    return await task_crud.create_task(db, task_body)
+@router.post('/users/{user_id}/tasks', response_model=task_schema.TaskCreateResponse)
+async def create_task(user_id: int, task_body: task_schema.TaskCreate, db: AsyncSession = Depends(get_db)):
+    return await task_crud.create_task(db, task_body, user_id=user_id)
 
 
 @router.put('/task/{task_id}', response_model=task_schema.TaskCreateResponse)

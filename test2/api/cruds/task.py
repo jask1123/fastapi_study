@@ -6,22 +6,22 @@ from typing import List, Optional, Tuple
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
-async def create_task(db: AsyncSession, task_create: task_schema.TaskCreate) -> task_model.Task:
-    task = task_model.Task(**task_create.dict())
+async def create_task(db: AsyncSession, task_create: task_schema.TaskCreate, user_id: int) -> task_model.Task:
+    task = task_model.Task(**task_create.dict(), user_id=user_id)
     db.add(task)
     await db.commit()
     await db.refresh(task)
     return task
 
 
-async def get_tasks_with_done(db: AsyncSession) -> List[Tuple[int, str, bool]]:
+async def get_tasks_with_done(db: AsyncSession,user_id: int) -> List[Tuple[int, str, bool]]:
     result: Result = await (
         db.execute(
             select(
                 task_model.Task.id,
                 task_model.Task.title,
                 task_model.Done.id.isnot(None).label("done"),
-            ).outerjoin(task_model.Done)
+            ).select_from(task_model.Task).outerjoin(task_model.Done).where(task_model.Task.user_id == user_id)
         )
     )
     return result.all()
