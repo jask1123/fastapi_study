@@ -58,6 +58,7 @@ docker compose exec demo-app poetry add aiomysql
 
 # user情報登録のためにbcryptをインストールする
 pyproject.tomlに以下を追加
+```bash
 [tool.poetry.dependencies]
 python = "^3.10"
 fastapi = "^0.99.1"
@@ -68,6 +69,7 @@ aiomysql = "^0.2.0"
 python-jose = {extras = ["cryptography"], version = "^3.0"}
 passlib = {extras = ["bcrypt"], version = "^1.0"}
 python-multipart = "^0.0.5"
+```
 ```bash
 poetry update
 ```
