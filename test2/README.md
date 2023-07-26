@@ -1,5 +1,5 @@
 # FastAPI practice
-fastAPIをMySQLと接続してDockerで構築
+FastAPIをMySQLと接続してDockerで構築
 
 ## Set up
 Dockerでbuild
